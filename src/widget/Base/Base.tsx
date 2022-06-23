@@ -4,6 +4,10 @@ import Nav from "../Nav/Nav";
 import ContHead from './ContHead'
 import { Routes, Route } from "react-router-dom";
 import {ContextState} from '../../widget/context/index'
+import { ProtectedRoute } from "../private-route";
+import Loader from "./Loader";
+import UsersList from "../../pages/Users";
+import Plans from "../../pages/Plans";
 
 function Base(props: any) {
     const [dispalyNav, setDisplayNav] = useState(true);
@@ -55,6 +59,7 @@ function Base(props: any) {
 
     return (
         <div className="main">
+            {Ctx.pageLoading == true && <Loader/>}
             <div className={`cont ${dispalyNav && 'cont-change'}`} >
                 <div className="cont-inner" >
                     <ContHead dispalyNavMobile={dispalyNavMobile} setDisplayNavMobile={setDisplayNavMobile} />
@@ -65,7 +70,10 @@ function Base(props: any) {
                         </div>
                         {props.children}
                         <Routes>
-                            <Route path="" element={<Dashboard />} />
+                            <Route path="" element={<ProtectedRoute ><Dashboard /></ProtectedRoute>} />
+                            <Route path="/users" element={<ProtectedRoute ><UsersList /></ProtectedRoute>} />
+                            <Route path="/plans" element={<ProtectedRoute ><Plans /></ProtectedRoute>} />
+
                         </Routes>
 
                     </div>

@@ -20,6 +20,12 @@ const NavData = [
 
         },]
     },
+    {
+        'name': "Plans",
+        'isSubmenu': false,
+        'link': '/panel/plans',
+        "icon": (<img src="/assets/svg/plan.svg" />),
+    }
 
 ]
 

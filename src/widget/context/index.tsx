@@ -4,6 +4,7 @@ export const ContextState = React.createContext<any>({})
 
 
 export default function ContextMain(props: any) {
+    const [pageLoading, setPageLoading] = useState<boolean>(false)
     const [pageTitle, setPageTitle] = useState<any>({
         'name':"" ,
         'rout':""
@@ -13,6 +14,8 @@ export default function ContextMain(props: any) {
         <ContextState.Provider value={{
             pageTitle ,
             setPageTitle ,
+            pageLoading ,
+            setPageLoading ,
 
         }}>
             {props.children}

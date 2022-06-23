@@ -37,13 +37,13 @@ function Nav(props: any) {
                             
                         </img>
                     }
-                    <img src="assets/svg/align.svg" onClick={props.ChangeDisplayNavMobile} className="nav-head-align-icon" />
+                    <img src="/assets/svg/align.svg" onClick={props.ChangeDisplayNavMobile} className="nav-head-align-icon" />
                 </div>
                 {/* <div className="nav-head-bottom"></div> */}
                 <div className="nav-profile">
                     <div className="nav-profile-head">
                         <img className="nav-profile-img" src={'/assets/media/admin.png'} alt="profile" />
-                        <span>Ehsan hoseeini</span>
+                        <span>{localStorage.getItem('username')}</span>
                     </div>
                     <div className="nav-profile-icon">
                         <div className="nav-profile-icon-item">
