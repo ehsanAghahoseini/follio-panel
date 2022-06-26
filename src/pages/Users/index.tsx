@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Users_Api } from "../../widget/api/users-api";
+import { Users_Api, User_Redirect_Api } from "../../widget/api/users-api";
 import { ContextState } from '../../widget/context/index'
 import { toast } from "react-toastify";
 import TablePage from "../../widget/Table/TablePage";
@@ -10,10 +10,24 @@ function UsersList(props: any) {
     const [currentPage, setCurrentPage] = useState(1);
     const [lastPage, setLastPage] = useState(0);
 
-    const handelRedirect=(id:number)=>{
+    const handelRedirect = async (id: number) => {
         console.log(id);
         // Ctx.setPageLoading(true)
-        
+
+        Ctx.setPageLoading(true)
+        const req = await User_Redirect_Api(id)
+        Ctx.setPageLoading(false)
+        if (req.token && req.url) {
+            let href_redirect = `${req.url}?token=${req.token}&userid=${req.user_id}`
+            let a = document.createElement('a');
+            a.target = '_blank';
+            a.href = href_redirect;
+            a.click();
+        }
+
+        // else if (req.message) {
+        //     toast(req.message, { type: "error" })
+        // }
     }
 
     const changePage = (status: any) => {
@@ -62,7 +76,7 @@ function UsersList(props: any) {
         {
             title: "Login as admin",
             render: (i: any) => (
-                <div onClick={()=>handelRedirect(i.id)} className=" px-3 h-[30px] rounded flex justify-center items-center bg-[#FF3A44] text-white">
+                <div onClick={() => handelRedirect(i.id)} className=" px-3 h-[30px] rounded flex justify-center items-center bg-[#FF3A44] text-white">
                     <span>Redirect</span>
                     <img src="/assets/svg/redirect.svg" className="w-[20px] mx-[10px]" />
                 </div>
