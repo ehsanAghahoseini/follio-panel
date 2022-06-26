@@ -10,6 +10,12 @@ function UsersList(props: any) {
     const [currentPage, setCurrentPage] = useState(1);
     const [lastPage, setLastPage] = useState(0);
 
+    const handelRedirect=(id:number)=>{
+        console.log(id);
+        // Ctx.setPageLoading(true)
+        
+    }
+
     const changePage = (status: any) => {
         if (status) {
             if (lastPage >= currentPage + 1) {
@@ -53,10 +59,19 @@ function UsersList(props: any) {
                 </>
             )
         },
+        {
+            title: "Login as admin",
+            render: (i: any) => (
+                <div onClick={()=>handelRedirect(i.id)} className=" px-3 h-[30px] rounded flex justify-center items-center bg-[#FF3A44] text-white">
+                    <span>Redirect</span>
+                    <img src="/assets/svg/redirect.svg" className="w-[20px] mx-[10px]" />
+                </div>
+            )
+        },
 
     ]
 
-    const getData = async (currentPage:number) => {
+    const getData = async (currentPage: number) => {
         Ctx.setPageLoading(true)
         const req = await Users_Api(currentPage)
         Ctx.setPageLoading(false)
