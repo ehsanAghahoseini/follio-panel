@@ -32,9 +32,7 @@ function Plans(props: any) {
 
     const onFinishAdd=async(e:any)=>{
         e.preventDefault()
-        setDisplayBtn(true)
-        console.log(e);
-        
+        setDisplayBtn(true)        
         const req = await Plans_Add_Api(e)
         setDisplayBtn(false)
         if (req.status == true) {

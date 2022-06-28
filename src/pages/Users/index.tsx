@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Users_Api, User_Redirect_Api , User_Delete_Api } from "../../widget/api/users-api";
+import { Users_Api, User_Redirect_Api, User_Delete_Api } from "../../widget/api/users-api";
 import { ContextState } from '../../widget/context/index'
 import { toast } from "react-toastify";
 import TablePage from "../../widget/Table/TablePage";
 import CModal from "../../widget/CModal/CModal";
+import UserEditExpire from "../../components/user-component/UserEditExpire";
+import UserEditDomain from "../../components/user-component/UserEditDomain";
 
 function UsersList(props: any) {
     const Ctx = useContext(ContextState);
@@ -11,8 +13,29 @@ function UsersList(props: any) {
     const [currentPage, setCurrentPage] = useState(1);
     const [lastPage, setLastPage] = useState(0);
     const [visibleDelete, setVisibleDelete] = useState<boolean>(false)
+    const [visibleEditExpire, setVisibleEditExpire] = useState<boolean>(false)
+    const [visibleEditDomain, setVisibleEditDomain] = useState<boolean>(false)
     const [selectItem, setSelectItem] = useState<any>(null)
 
+    const clearData = () => {
+        setVisibleEditExpire(false)
+        setVisibleDelete(false)
+        setVisibleEditDomain(false)
+        setSelectItem(null)
+        Ctx.setPageLoading(false)
+        let form2: any = document.getElementById('f-edit-user-expire')
+        form2?.reset()
+    }
+
+    const startEditDomain = (id: number) => {
+        setSelectItem(id)
+        setVisibleEditDomain(true)
+    }
+
+    const startEditExpire = (id: number) => {
+        setSelectItem(id)
+        setVisibleEditExpire(true)
+    }
 
     const startDelete = (id: number) => {
         setSelectItem(id)
@@ -78,7 +101,18 @@ function UsersList(props: any) {
         },
         {
             title: "Domain",
-            render: (i: any) => (<>{i.domain != null && i.domain}</>)
+            render: (i: any) => (<>
+                {
+                    i.domain != null ?
+                        <span onClick={()=>startEditDomain(i.id)}>{i.domain}</span>
+                        :
+                        <span onClick={()=>startEditDomain(i.id)} className=" px-[4px] h-[20px] text-sm flex justify-center items-center rounded border border-follio-200 text-follio-200 font-extralight"> no domain</span>
+                }
+            </>)
+        },
+        {
+            title: "Expire Date",
+            render: (i: any) => (<span onClick={() => startEditExpire(i.id)}>{i.expire_date != null && i.expire_date}</span>)
         },
         {
             title: "Verification step",
@@ -105,7 +139,7 @@ function UsersList(props: any) {
         {
             title: "Delete",
             render: (i: any) => (
-                <div onClick={()=>startDelete(i.id)} className=" w-[30px] h-[30px] rounded flex justify-center items-center bg-[#FF3A44] text-white">
+                <div onClick={() => startDelete(i.id)} className=" w-[30px] h-[30px] rounded flex justify-center items-center bg-[#FF3A44] text-white">
                     <svg x="0px" y="0px" viewBox="0 0 458.5 458.5" className={` w-4 fill-white transition-all   `}>
                         <use xlinkHref="/assets/svg/trash.svg#trashh" />
                     </svg>
@@ -158,15 +192,32 @@ function UsersList(props: any) {
                 }
             </TablePage>
 
-            <CModal  visible={visibleDelete} setVisible={setVisibleDelete} radius="30px" uId="deleteplans">
+            <CModal onScap={clearData} visible={visibleDelete} setVisible={setVisibleDelete} radius="30px" uId="deleteplans" >
                 <div className="w-full flex flex-col p-3">
                     <span>Are you sure delete users ?</span>
                     <div className=" flex mt-[30px] items-center justify-around">
                         <button onClick={onFinishDelete} type="button" className="w-[120px] h-[40px] rounded-[30px] bg-follio-200 text-white ">Ok</button>
-                        <button onClick={()=>{setVisibleDelete(false)}} type="button" className="w-[120px] h-[40px] rounded-[30px] border border-follio-200 text-follio-200 ">Cansel</button>
+                        <button onClick={() => { setVisibleDelete(false) }} type="button" className="w-[120px] h-[40px] rounded-[30px] border border-follio-200 text-follio-200 ">Cansel</button>
                     </div>
                 </div>
             </CModal>
+
+            <UserEditExpire
+                visible={visibleEditExpire}
+                setVisible={setVisibleEditExpire}
+                clearData={clearData}
+                selectItem={selectItem}
+                getData={getData}
+                currentPage={currentPage}
+            />
+
+            <UserEditDomain
+                visible={visibleEditDomain}
+                setVisible={setVisibleEditDomain}
+                selectItem={selectItem}
+                getData={getData}
+                currentPage={currentPage}
+            />
 
         </div>
     )
