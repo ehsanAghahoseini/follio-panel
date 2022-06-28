@@ -1,19 +1,39 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Users_Api, User_Redirect_Api } from "../../widget/api/users-api";
+import { Users_Api, User_Redirect_Api , User_Delete_Api } from "../../widget/api/users-api";
 import { ContextState } from '../../widget/context/index'
 import { toast } from "react-toastify";
 import TablePage from "../../widget/Table/TablePage";
+import CModal from "../../widget/CModal/CModal";
 
 function UsersList(props: any) {
     const Ctx = useContext(ContextState);
     const [listData, setListData] = useState<any>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [lastPage, setLastPage] = useState(0);
+    const [visibleDelete, setVisibleDelete] = useState<boolean>(false)
+    const [selectItem, setSelectItem] = useState<any>(null)
+
+
+    const startDelete = (id: number) => {
+        setSelectItem(id)
+        setVisibleDelete(true)
+    }
+
+    const onFinishDelete = async () => {
+        Ctx.setPageLoading(true)
+        const req = await User_Delete_Api(selectItem)
+        Ctx.setPageLoading(false)
+        setVisibleDelete(false)
+        if (req.status == true) {
+            getData(currentPage)
+            toast(req.message, { type: "success" })
+        }
+        else if (req.message) {
+            toast(req.message, { type: "error" })
+        }
+    }
 
     const handelRedirect = async (id: number) => {
-        console.log(id);
-        // Ctx.setPageLoading(true)
-
         Ctx.setPageLoading(true)
         const req = await User_Redirect_Api(id)
         Ctx.setPageLoading(false)
@@ -76,12 +96,22 @@ function UsersList(props: any) {
         {
             title: "Login as admin",
             render: (i: any) => (
-                <div onClick={() => handelRedirect(i.id)} className=" px-3 h-[30px] rounded flex justify-center items-center bg-[#FF3A44] text-white">
+                <div onClick={() => handelRedirect(i.id)} className=" px-1 h-[30px] rounded flex justify-center items-center bg-follio-200 text-white">
                     <span>Redirect</span>
                     <img src="/assets/svg/redirect.svg" className="w-[20px] mx-[10px]" />
                 </div>
             )
         },
+        {
+            title: "Delete",
+            render: (i: any) => (
+                <div onClick={()=>startDelete(i.id)} className=" w-[30px] h-[30px] rounded flex justify-center items-center bg-[#FF3A44] text-white">
+                    <svg x="0px" y="0px" viewBox="0 0 458.5 458.5" className={` w-4 fill-white transition-all   `}>
+                        <use xlinkHref="/assets/svg/trash.svg#trashh" />
+                    </svg>
+                </div>
+            )
+        }
 
     ]
 
@@ -127,6 +157,16 @@ function UsersList(props: any) {
                     </div>
                 }
             </TablePage>
+
+            <CModal  visible={visibleDelete} setVisible={setVisibleDelete} radius="30px" uId="deleteplans">
+                <div className="w-full flex flex-col p-3">
+                    <span>Are you sure delete users ?</span>
+                    <div className=" flex mt-[30px] items-center justify-around">
+                        <button onClick={onFinishDelete} type="button" className="w-[120px] h-[40px] rounded-[30px] bg-follio-200 text-white ">Ok</button>
+                        <button onClick={()=>{setVisibleDelete(false)}} type="button" className="w-[120px] h-[40px] rounded-[30px] border border-follio-200 text-follio-200 ">Cansel</button>
+                    </div>
+                </div>
+            </CModal>
 
         </div>
     )
