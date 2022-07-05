@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { ApiInputOptional, ApiInputRequired, GetCustomizedOrdersOptions } from "../types/api.types";
 
 // this baseUrl is configed in next.config.js
-export const baseUrl = "https://follio.moshtarimadar.com/api"
+export const baseUrl = "https://api.myfollio.io/api"
 
 
 export async function getToken(): Promise<string | null> {
