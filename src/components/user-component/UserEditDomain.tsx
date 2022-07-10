@@ -20,7 +20,7 @@ function UserEditDomain({ visible, setVisible, selectItem, getData, currentPage 
     const [isFree, setIsFree] = useState<number>(0)
     const [displayBtn, setDisplayBtn] = useState<boolean>(false)
 
-    const clearData=()=>{
+    const clearData = () => {
         let form3: any = document.getElementById('f-edit-user-domain')
         form3?.reset()
         setVisible(false)
@@ -78,13 +78,13 @@ function UserEditDomain({ visible, setVisible, selectItem, getData, currentPage 
 
                     </div>
                     {isFree == 0 &&
-                        <span className=" text-gray-500 text-lg m-3">{domainName}.follio.com  </span>
+                        <span className=" text-gray-500 text-lg m-3">{domainName}.myfollio.io  </span>
                     }
                     {isFree == 1 &&
-                        <span className=" text-green-600 text-lg m-3">{domainName}.follio.com  free </span>
+                        <span className=" text-green-600 text-lg m-3">{domainName}.myfollio.io  free </span>
                     }
                     {isFree == -1 &&
-                        < span className=" text-red-600 text-lg m-3">{domainName}.follio.com reserved </span>
+                        < span className=" text-red-600 text-lg m-3">{domainName}.myfollio.io reserved </span>
                     }
                     {isFree == 1 &&
                         <>
