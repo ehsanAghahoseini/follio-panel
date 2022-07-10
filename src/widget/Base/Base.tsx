@@ -8,8 +8,8 @@ import { ProtectedRoute } from "../private-route";
 import Loader from "./Loader";
 import UsersList from "../../pages/Users";
 import Plans from "../../pages/Plans";
-import Password from "../../pages/Settings/password";
-import Username from "../../pages/Settings/username";
+import Settings from "../../pages/Settings";
+
 
 function Base(props: any) {
     const [dispalyNav, setDisplayNav] = useState(true);
@@ -75,8 +75,7 @@ function Base(props: any) {
                             <Route path="" element={<ProtectedRoute ><Dashboard /></ProtectedRoute>} />
                             <Route path="/users" element={<ProtectedRoute ><UsersList /></ProtectedRoute>} />
                             <Route path="/plans" element={<ProtectedRoute ><Plans /></ProtectedRoute>} />
-                            <Route path="/settings/password" element={<ProtectedRoute ><Password /></ProtectedRoute>} />
-                            <Route path="/settings/username" element={<ProtectedRoute ><Username /></ProtectedRoute>} />
+                            <Route path="/settings" element={<ProtectedRoute ><Settings /></ProtectedRoute>} />
 
                         </Routes>
 

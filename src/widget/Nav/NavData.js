@@ -26,19 +26,9 @@ const NavData = [{
     },
     {
         'name': "Settings",
-        'isSubmenu': true,
+        'isSubmenu': false,
+        'link': '/panel/settings',
         "icon": ( < img src = "/assets/svg/cog.svg" / > ),
-        'submenu': [{
-                'name': "Username",
-                'link': '/panel/settings/username',
-                "icon": ( < img src = "/assets/svg/user.svg" / > ),
-            },
-            {
-                'name': "Password",
-                'link': '/panel/settings/password',
-                "icon": ( < img src = "/assets/svg/key.svg" / > ),
-            },
-        ]
     },
 
 ]
